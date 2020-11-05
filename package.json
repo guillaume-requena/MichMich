@@ -1,0 +1,22 @@
+{
+  "name": "michmich",
+  "version": "1.0.0",
+  "description": "Version 1 de MichMich",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guillaume-requena/MichMich.git"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "Guillaume",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guillaume-requena/MichMich/issues"
+  },
+  "homepage": "https://github.com/guillaume-requena/MichMich#readme"
+}
