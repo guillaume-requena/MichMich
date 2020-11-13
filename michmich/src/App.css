@@ -36,3 +36,71 @@
     transform: rotate(360deg);
   }
 }
+
+.formulaire {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  user-select: none;
+}
+
+.formulaire > .people{
+  font-size: 1.5em;
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  margin: auto;
+  margin-top: 100px;
+}
+
+.formulaire > .activity{
+  font-size: 1.5em;
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  margin: auto;
+  margin-top: 50px;
+  user-select: none;
+}
+
+.formulaire > .addresses{
+  font-size: 1.5em;
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  margin: auto;
+  margin-top: 50px;
+  user-select: none;
+}
+
+.formulaire > .button{
+  font-size: 1.5em;
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  margin: auto;
+  margin-top: 100px;
+  user-select: none;
+  justify-content: center;
+}
+
+.addressCommute > .address {
+  font-size: 1.5em;
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  margin: auto;
+  user-select: none;
+  justify-content: space-evenly;
+}
+
+.addresses > .addAddressButton {
+  font-size: 1.5em;
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  margin: auto;
+  margin-top: 20px;
+  user-select: none;
+  justify-content: center;
+}
