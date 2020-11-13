@@ -50,7 +50,7 @@
   flex-wrap: wrap;
   width: 300px;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .formulaire > .activity{
@@ -79,13 +79,58 @@
   flex-wrap: wrap;
   width: 300px;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 30px;
   user-select: none;
   justify-content: center;
 }
 
+.addresses {
+  margin-bottom: 10px;
+}
+
+.addressCommute {
+  margin-bottom: 30px;
+}
+
 .addressCommute > .address {
   font-size: 1.5em;
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  margin: auto;
+  user-select: none;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.address > .addressInput {
+  font-size: 0.5em;
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 4;
+  height: 30px;
+  width: 100px;
+  margin: 0.2em;
+  user-select: none;
+  justify-content: flex-start;
+}
+
+.delete > .deleteButton {
+  font-size: 0.5em;
+  display: flex;
+  flex-wrap: wrap;
+  height: 36px;
+  width: 100px;
+  margin: 0.2em;
+  user-select: none;
+}
+
+.deleteSymbol {
+  margin: auto;
+}
+
+.addressCommute > .commutes {
+  font-size: 1.2em;
   display: flex;
   flex-wrap: wrap;
   width: 300px;
@@ -100,7 +145,6 @@
   flex-wrap: wrap;
   width: 300px;
   margin: auto;
-  margin-top: 20px;
   user-select: none;
   justify-content: center;
 }

@@ -4,7 +4,7 @@ import './App.css';
 
 import Commute from './Commute'
 
-const COMMUTE = ['walking', 'transit', 'driving', 'cycling']
+const COMMUTE = ['🚶🏽‍♂️', '🚇', '🚗', '🚲']
 
 class App extends Component {
   state = {
@@ -53,7 +53,20 @@ class App extends Component {
   handleCommuteTypeClick = (index, indexCommute) => {
     let {allCommuteWays} = this.state
     allCommuteWays.splice(index, 1, indexCommute)
+    console.log(allCommuteWays)
     this.setState({ allCommuteWays });
+  }
+
+  getFeedbackForCommuteButton = (index, indexCommute) => {
+    const {allCommuteWays} = this.state
+    console.log(allCommuteWays[index])
+  
+    if (allCommuteWays[index] === indexCommute) {
+      return 'hidden'
+    }
+    else {
+      return 'visible'
+    }
   }
 
   handleAddAddressClick = () => {
@@ -107,34 +120,28 @@ class App extends Component {
             {allAddresses.map((address, index) => (
               <div className="addressCommute" key={index}>
                 <div className="address" >
-                  <div className="addressInput">
-                      <label>
-                          <input
-                              type="text"
-                              onChange={(e) => {
-                                                  let {allAddresses} = this.state
-                                                  allAddresses.splice(index, 1, e.target.value)
-                                                  this.setState({ allAddresses });
-                                                } }
-                              autoComplete="given-name"
-                              placeholder={'Adresse '+(index+1)}
-                              value={address}
-                              required={true}
-                          />
-                          
-                      </label>
-                  </div>
-                  <div className="deleteButton">
-                      <div className={`button ${index}`} onClick={() => this.handleDeleteClick(index)}>
-                          <button className="delete">
-                              X
-                          </button>
-                      </div>
+                  <input
+                      className="addressInput"
+                      type="text"
+                      onChange={(e) => {
+                                          let {allAddresses} = this.state
+                                          allAddresses.splice(index, 1, e.target.value)
+                                          this.setState({ allAddresses });
+                                        } }
+                      autoComplete="given-name"
+                      placeholder={'Adresse '+(index+1)}
+                      value={address}
+                      required={true}
+                  />
+                  <div className="delete" onClick={() => this.handleDeleteClick(index)}>
+                      <button className="deleteButton">
+                        <span className="deleteSymbol">X</span>
+                      </button>
                   </div>
                 </div>
                 <div className="commutes">
                   {commuteTypes.map((commuteType, indexCommute) => (
-                    <Commute commuteType={commuteType} key={indexCommute} indexCommute={indexCommute} index={index} onClick={() => this.handleCommuteTypeClick(index, indexCommute)}/>
+                    <Commute commuteType={commuteType} key={indexCommute} feedback={this.getFeedbackForCommuteButton(index, indexCommute)} indexCommute={indexCommute} index={index} onClick={() => this.handleCommuteTypeClick(index, indexCommute)}/>
                   ))} 
                 </div>
               </div>

@@ -1,8 +1,17 @@
-.addressCommute > .commute {
+.commutes > .commute {
     font-size: 1em;
     flex: 1 1 calc(100% / 6 - 0.4em);
-    outline: 0.08em solid silver;
+    outline: 0.13em solid silver;
     margin: 0.2em;
     display: flex;
     cursor: default;
+    text-align: center;
   }
+
+.commutes > .commute.hidden {
+    opacity: 0.3;
+  }
+
+.commutes > .commute > .symbol {
+  margin: auto;
+}

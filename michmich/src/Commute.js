@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import './Commute.css'
 
-const Commute = ({ commuteType, indexCommute, index, onClick }) => (
-    <div className={`commute ${indexCommute}`} onClick={() => onClick(index, indexCommute)}>
+const Commute = ({ commuteType, feedback, indexCommute, index, onClick }) => (
+    <div className={`commute ${feedback}`} onClick={() => onClick(index, indexCommute)}>
       <span className="symbol">
         {commuteType}
       </span>
