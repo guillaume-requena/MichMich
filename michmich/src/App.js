@@ -22,6 +22,7 @@ class App extends Component {
       .replace(/\D/, '')
       .slice(0, 2)
     this.setState({amountOfUsers: value})
+    console.log(1)
 
     var newAllAddresses = []
     var newAllCommuteWays = []
@@ -53,13 +54,11 @@ class App extends Component {
   handleCommuteTypeClick = (index, indexCommute) => {
     let {allCommuteWays} = this.state
     allCommuteWays.splice(index, 1, indexCommute)
-    console.log(allCommuteWays)
     this.setState({ allCommuteWays });
   }
 
   getFeedbackForCommuteButton = (index, indexCommute) => {
     const {allCommuteWays} = this.state
-    console.log(allCommuteWays[index])
   
     if (allCommuteWays[index] === indexCommute) {
       return 'hidden'
@@ -70,10 +69,9 @@ class App extends Component {
   }
 
   handleAddAddressClick = () => {
-    const { allAddresses, amountOfUsers, commuteTypes, allCommuteWays } = this.state
+    const { allAddresses, amountOfUsers, allCommuteWays } = this.state
     allAddresses.push('')
     allCommuteWays.push('')
-    console.log(commuteTypes)
     var newAmountOfUsers
     if (amountOfUsers === ''){
       newAmountOfUsers = 1
@@ -89,32 +87,28 @@ class App extends Component {
 
     return (
       <form className="formulaire">
-        <div className="people">
-          <label>
-            Vous êtes combien ?
-            <input
-                type="int"
-                onChange={this.handleAmountOfUsersUpdate}
-                autoComplete="given-name"
-                placeholder="3"
-                value={amountOfUsers}
-                required={true}
-            />
-          </label>
-        </div>
-        <div className="activity">
-          <label>
-            Pour quoi faire ?
-            <input
-                type="text"
-                onChange={this.handleActivityUpdate}
-                autoComplete="given-name"
-                placeholder="Bar"
-                value={activity}
-                required={true}
-            />
-          </label>
-        </div>
+        <label className="people">
+          <span>Vous êtes combien ?</span>
+          <input className="peopleInput"
+              type="int"
+              onChange={this.handleAmountOfUsersUpdate}
+              autoComplete="given-name"
+              placeholder="3"
+              value={amountOfUsers}
+              required={true}
+          />
+        </label>
+        <label className="activity">
+          <span>Pour quoi faire ?</span>
+          <input className="activityInput"
+              type="text"
+              onChange={this.handleActivityUpdate}
+              autoComplete="given-name"
+              placeholder="Bar"
+              value={activity}
+              required={true}
+          />
+        </label>
         <div className="addresses">
             Quelles sont les adresses ?
             {allAddresses.map((address, index) => (
