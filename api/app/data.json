@@ -1,0 +1,44 @@
+{
+  "pallets" : [
+    {
+      "type":{
+      "length" : 2200,
+      "width" : 600,
+      "ask" : 1
+      }
+    },
+    {
+      "type":{
+      "length" : 1000,
+      "width" : 800,
+      "ask" : 5
+      }
+    },
+    {
+      "type":{
+      "length" : 1400,
+      "width" : 600,
+      "ask" : 4
+      }
+    },
+    {
+      "type":{
+      "length" : 1600,
+      "width" : 800,
+      "ask" : 1
+      }
+    },
+    {
+      "type":{
+      "length" : 1000,
+      "width" : 600,
+      "ask" : 3
+
+      }
+    }
+  ],
+  "truck": {
+    "length" : 3000,
+    "width" : 1400
+  }
+}

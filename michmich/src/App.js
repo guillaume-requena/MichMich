@@ -83,6 +83,36 @@ class App extends Component {
     this.setState({allAddresses, amountOfUsers: newAmountOfUsers, allCommuteWays})
   }
 
+  sendData(){
+    fetch('http://127.0.0.1:5000/optim-load',{
+      method:'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        pallets: this.pallets.map(function(pallet){
+          return {
+            type:{
+              length:parseInt(pallet.length, 10),
+              width:parseInt(pallet.width, 10)
+            }
+          }
+        }),
+        truck:{
+          length: parseInt(this.Length, 10),
+          width: parseInt(this.Width, 10)
+        }
+      })
+    })
+      .then((response) => {
+        response.json().then((data) => {
+          this.data=data
+          console.log('data',data)
+        })
+      })
+  }
+
   render() {
     const { amountOfUsers, activity, allAddresses, commuteTypes } = this.state
 
