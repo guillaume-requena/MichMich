@@ -22,7 +22,6 @@ class App extends Component {
       .replace(/\D/, '')
       .slice(0, 2)
     this.setState({amountOfUsers: value})
-    console.log(1)
 
     var newAllAddresses = []
     var newAllCommuteWays = []
@@ -39,6 +38,7 @@ class App extends Component {
     const value = event.target.value
       // Remove all non-digits
       .replace(/\d/, '')
+    console.log(value)
 
     this.setState({activity: value})
   }
@@ -54,6 +54,7 @@ class App extends Component {
   handleCommuteTypeClick = (index, indexCommute) => {
     let {allCommuteWays} = this.state
     allCommuteWays.splice(index, 1, indexCommute)
+    console.log(allCommuteWays)
     this.setState({ allCommuteWays });
   }
 
@@ -120,6 +121,7 @@ class App extends Component {
                       onChange={(e) => {
                                           let {allAddresses} = this.state
                                           allAddresses.splice(index, 1, e.target.value)
+                                          console.log(allAddresses)
                                           this.setState({ allAddresses });
                                         } }
                       autoComplete="given-name"
@@ -146,7 +148,7 @@ class App extends Component {
                 </button>
             </div>
         </div>
-        <button type="submit" className="button">Testons MichMich</button>
+        <button type="submit" className="button" onClick={()=>this.sendData()}>Testons MichMich</button>
       </form>
     )
   }
