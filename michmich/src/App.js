@@ -12,7 +12,8 @@ class App extends Component {
     activity: '',
     allAddresses: [],
     allCommuteWays: [],
-    commuteTypes: COMMUTE
+    commuteTypes: COMMUTE,
+    currentTime: 0
   }
 
   // Arrow fx for binding
@@ -83,38 +84,45 @@ class App extends Component {
     this.setState({allAddresses, amountOfUsers: newAmountOfUsers, allCommuteWays})
   }
 
+  changeTime(){
+    fetch('/time')
+      .then((response) => {
+        console.log(response)
+        response.json().then((data) => {
+          console.log(data.time)
+        })
+      })
+  }
+
+
   sendData(){
-    fetch('http://127.0.0.1:5000/optim-load',{
+    fetch('/test',{
       method:'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        pallets: this.pallets.map(function(pallet){
+        amountOfUsers: this.state.amountOfUsers,
+        activity: this.state.activity,
+        addresses: this.state.allAddresses.map((address, index) => {
           return {
-            type:{
-              length:parseInt(pallet.length, 10),
-              width:parseInt(pallet.width, 10)
-            }
+            address: address,
+            commuteType: this.state.allCommuteWays[index]
           }
-        }),
-        truck:{
-          length: parseInt(this.Length, 10),
-          width: parseInt(this.Width, 10)
-        }
+        })
+        })
       })
-    })
       .then((response) => {
+        console.log(response)
         response.json().then((data) => {
-          this.data=data
-          console.log('data',data)
+          console.log(data)
         })
       })
   }
 
   render() {
-    const { amountOfUsers, activity, allAddresses, commuteTypes } = this.state
+    const { amountOfUsers, activity, allAddresses, commuteTypes, currentTime } = this.state
 
     return (
       <form className="formulaire">
@@ -177,8 +185,9 @@ class App extends Component {
                     +
                 </button>
             </div>
+                  <button onClick={()=>this.sendData()}> The Back is working : {currentTime} </button>
         </div>
-        <button type="submit" className="button" onClick={()=>this.sendData()}>Testons MichMich</button>
+        <button type="submit" className="button" >Testons MichMich</button>
       </form>
     )
   }

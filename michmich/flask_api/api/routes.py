@@ -1,7 +1,12 @@
 from api import app
+from flask import request
+import time
 
-@app.route('/form', methods=['POST'])
-def form():
-    forms = ['hey', 'oh']
+@app.route('/time')
+def getCurrentTime():
+    return {'time': 2}
 
-    return ({'form':forms})
+@app.route('/test', methods=['POST'])
+def testAPI():
+    data = request.get_json()
+    return data

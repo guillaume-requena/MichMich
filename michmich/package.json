@@ -1,5 +1,6 @@
 {
   "name": "michmich",
+  "proxy": "http://localhost:5000",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,7 +14,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-api": "cd flask_api && flask run --no-debugger",
+    "start-api": "cd flask_api && pipenv/bin/flask run --no-debugger",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test-api": "cd flask_api && flask test",
@@ -36,6 +37,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "http://localhost:5000"
+  }
 }
