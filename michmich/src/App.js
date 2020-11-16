@@ -112,7 +112,7 @@ class App extends Component {
   }
 
   render() {
-    const { amountOfUsers, activity, allAddresses, commuteTypes, currentTime } = this.state
+    const { amountOfUsers, activity, allAddresses, commuteTypes } = this.state
 
     return (
       <form className="formulaire">
