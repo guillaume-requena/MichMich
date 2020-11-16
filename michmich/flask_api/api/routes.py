@@ -12,7 +12,8 @@ def testAPI():
     modes_transport = [data['addresses'][i]['commuteType'] for i in range(len(data['addresses']))]
     modes_transport = [dico_commute[modes_transport[i]] for i in range(len(modes_transport))]
     # modes_transports[-1]=0
-    adresses[-1]='24 boulevard du général Leclerc, Neuilly'
+    # adresses[-1]='24 boulevard du général Leclerc, Neuilly'
     activity = data['activity']
     res = get_places.mich_mich(adresses, modes_transport, what = activity)
     return res
+    #{'res1': adresses, 'res2': modes_transport, 'res3':activity}
