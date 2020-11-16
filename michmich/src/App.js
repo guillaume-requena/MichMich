@@ -44,7 +44,8 @@ class App extends Component {
     this.setState({activity: value})
   }
 
-  handleDeleteClick = index => {
+  handleDeleteClick = (index, e) => {
+    e.preventDefault();
     const { allAddresses, allCommuteWays, amountOfUsers } = this.state
     allAddresses.splice(index, 1)
     allCommuteWays.splice(index, 1)
@@ -167,7 +168,7 @@ class App extends Component {
                       value={address}
                       required={true}
                   />
-                  <div className="delete" onClick={() => this.handleDeleteClick(index)}>
+                  <div className="delete" onClick={(e) => this.handleDeleteClick(index, e)}>
                       <button className="deleteButton">
                         <span className="deleteSymbol">X</span>
                       </button>
