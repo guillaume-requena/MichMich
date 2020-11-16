@@ -1,7 +1,12 @@
-import pandas as pd
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
+# # import pandas as pd
 import numpy as np
 import requests
 from urllib.parse import urlencode, urlparse , parse_qsl
+
 
 api_key = 'AIzaSyCEUIo5QkTQbHL8eBolEF6C4i0fSsnarFk'
 
@@ -122,6 +127,7 @@ def mich_mich(adresses, modes_transport, what = 'Bar'):
     main function
     '''
     n = len(adresses)
+
     #Get the point in the middle 
     points = np.array([extract_lat_lng(adr) for adr in adresses])
     lat , lng = centre_gravite(points)
@@ -139,4 +145,10 @@ def mich_mich(adresses, modes_transport, what = 'Bar'):
     radius = distances.max()/10
     #Get the results of the places at a distance < radius of the center calculated
     results =  nearbysearch(lat, lng, radius, what)
-    return results 
+
+    return results
+
+import os 
+
+print(os.environ.get('FLASK_APP'))
+print(app.FLASK_APP)

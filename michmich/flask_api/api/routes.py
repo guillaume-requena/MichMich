@@ -3,7 +3,7 @@ from api import app
 from flask import request
 import time
 import json 
-from api import test 
+from api import get_places 
 
 
 
