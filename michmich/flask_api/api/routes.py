@@ -22,5 +22,5 @@ def testAPI():
     # modes_transports[-1]=0
     adresses[-1]='24 boulevard du général Leclerc, Neuilly'
     activity = data['activity']
-    res = test.mich_mich(adresses, modes_transport, what = activity)
+    res = get_places.mich_mich(adresses, modes_transport, what = activity)
     return res

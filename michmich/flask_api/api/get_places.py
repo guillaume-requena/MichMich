@@ -148,7 +148,3 @@ def mich_mich(adresses, modes_transport, what = 'Bar'):
 
     return results
 
-import os 
-
-print(os.environ.get('FLASK_APP'))
-print(app.FLASK_APP)
