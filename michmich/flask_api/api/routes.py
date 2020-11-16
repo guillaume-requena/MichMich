@@ -1,15 +1,7 @@
 from api import app
-# import get_places
 from flask import request
-import time
 import json 
 from api import get_places 
-
-
-
-@app.route('/time')
-def getCurrentTime():
-    return {'time': 2}
 
 @app.route('/test', methods=['POST'])
 def testAPI():

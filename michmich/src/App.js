@@ -12,8 +12,7 @@ class App extends Component {
     activity: '',
     allAddresses: [],
     allCommuteWays: [],
-    commuteTypes: COMMUTE,
-    currentTime: 0
+    commuteTypes: COMMUTE
   }
 
   // Arrow fx for binding
@@ -85,18 +84,8 @@ class App extends Component {
     this.setState({allAddresses, amountOfUsers: newAmountOfUsers, allCommuteWays})
   }
 
-  changeTime(){
-    fetch('/time')
-      .then((response) => {
-        console.log(response)
-        response.json().then((data) => {
-          console.log(data.time)
-        })
-      })
-  }
-
-
-  sendData(){
+  sendData = (e) => {
+    e.preventDefault();
     fetch('/test',{
       method:'POST',
       headers: {
@@ -186,9 +175,8 @@ class App extends Component {
                     +
                 </button>
             </div>
-                  <button onClick={()=>this.sendData()}> The Back is working : {currentTime} </button>
         </div>
-        <button type="submit" className="button" >Testons MichMich</button>
+        <button type="submit" className="button" onClick={(e)=>this.sendData(e)}>Testons MichMich</button>
       </form>
     )
   }
