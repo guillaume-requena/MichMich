@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 flask_api/pipenv/
+./flask_api/pipenv/
+pipenv/
+.pipenv
 
 # testing
 /coverage
