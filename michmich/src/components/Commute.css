@@ -6,10 +6,11 @@
     display: flex;
     cursor: default;
     text-align: center;
+    background-color: white;
   }
 
 .commutes > .commute.hidden {
-    opacity: 0.3;
+    opacity: 0.4;
   }
 
 .commutes > .commute > .symbol {
