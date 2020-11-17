@@ -2,6 +2,7 @@ from api import app
 from flask import request
 import json 
 from api import get_places 
+import pandas as pd
 
 @app.route('/test', methods=['POST'])
 def testAPI():
