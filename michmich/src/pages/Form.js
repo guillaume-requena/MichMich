@@ -14,7 +14,7 @@ class Form extends Component {
       allAddresses: [],
       allCommuteWays: [],
       commuteTypes: COMMUTE,
-      resultFromPython: []
+      resultFromPython: {}
     }
   
     // Arrow fx for binding
@@ -106,6 +106,7 @@ class Form extends Component {
           })
         })
         .then((response) => {
+          console.log(response)
           response.json().then((data) => {
             console.log(data)
             this.setState({resultFromPython: data})
@@ -178,13 +179,12 @@ class Form extends Component {
                   </button>
               </div>
           </div>
-          <button type="submit" className="button"><Link to={{
-                                                                                            pathname: '/map',
-                                                                                            state: {
-                                                                                              resultFromPython: resultFromPython
-                                                                                            }
-                                                                                          }}
-                                                                                          onClick={(e)=>this.sendData(e)}>Testons MichMich</Link></button>
+          <button type="submit" className="button" onClick={(e)=>this.sendData(e)}><Link to={{
+                                                                                              pathname: '/map',
+                                                                                              /*state: {
+                                                                                                resultFromPython: resultFromPython
+                                                                                              }*/
+                                                                                            }}>Testons MichMich</Link></button>
         </form>
       )
     }
