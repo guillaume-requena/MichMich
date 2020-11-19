@@ -4,17 +4,20 @@ import { Link } from "react-router-dom";
 import './Form.css';
 
 import Commute from '../components/Commute'
+import Map from '../components/Map'
 
 const COMMUTE = ['🚶🏽‍♂️', '🚇', '🚗', '🚲']
 
 class Form extends Component {
     state = {
-      amountOfUsers: '',
-      activity: '',
-      allAddresses: [],
-      allCommuteWays: [],
+      amountOfUsers: '2',
+      activity: 'Bar',
+      allAddresses: ['Place Monge, Paris','Pont de Neuilly'],
+      allCommuteWays: [0, 3],
       commuteTypes: COMMUTE,
-      resultFromPython: {}
+      results: false,
+      form: true,
+      resultFromPython: []
     }
   
     // Arrow fx for binding
@@ -106,86 +109,86 @@ class Form extends Component {
           })
         })
         .then((response) => {
-          console.log(response)
           response.json().then((data) => {
-            console.log(data)
-            this.setState({resultFromPython: data})
+            console.log(Object.values(data)[0].name)
+            this.setState({resultFromPython: Object.values(data), results: true, form:false})
           })
         })
     }
   
     render() {
-      const { amountOfUsers, activity, allAddresses, commuteTypes, resultFromPython } = this.state
+      const { amountOfUsers, activity, allAddresses, commuteTypes, resultFromPython, results, form } = this.state
   
       return (
-        <form className="formulaire">
-          <label className="people">
-            <span>Vous êtes combien ?</span>
-            <input className="peopleInput"
-                type="int"
-                onChange={this.handleAmountOfUsersUpdate}
-                autoComplete="given-name"
-                placeholder="3"
-                value={amountOfUsers}
-                required={true}
-            />
-          </label>
-          <label className="activity">
-            <span>Pour quoi faire ?</span>
-            <input className="activityInput"
-                type="text"
-                onChange={this.handleActivityUpdate}
-                autoComplete="given-name"
-                placeholder="Bar"
-                value={activity}
-                required={true}
-            />
-          </label>
-          <div className="addresses">
-              Quelles sont les adresses ?
-              {allAddresses.map((address, index) => (
-                <div className="addressCommute" key={index}>
-                  <div className="address" >
-                    <input
-                        className="addressInput"
-                        type="text"
-                        onChange={(e) => {
-                                            let {allAddresses} = this.state
-                                            allAddresses.splice(index, 1, e.target.value)
-                                            console.log(allAddresses)
-                                            this.setState({ allAddresses });
-                                          } }
-                        autoComplete="given-name"
-                        placeholder={'Adresse '+(index+1)}
-                        value={address}
-                        required={true}
-                    />
-                    <div className="delete" onClick={(e) => this.handleDeleteClick(index, e)}>
-                        <button className="deleteButton">
-                          <span className="deleteSymbol">X</span>
-                        </button>
+        <div>
+          {form && (
+          <form className="formulaire">
+            <label className="people">
+              <span>Vous êtes combien ?</span>
+              <input className="peopleInput"
+                  type="int"
+                  onChange={this.handleAmountOfUsersUpdate}
+                  autoComplete="given-name"
+                  placeholder="3"
+                  value={amountOfUsers}
+                  required={true}
+              />
+            </label>
+            <label className="activity">
+              <span>Pour quoi faire ?</span>
+              <input className="activityInput"
+                  type="text"
+                  onChange={this.handleActivityUpdate}
+                  autoComplete="given-name"
+                  placeholder="Bar"
+                  value={activity}
+                  required={true}
+              />
+            </label>
+            <div className="addresses">
+                Quelles sont les adresses ?
+                {allAddresses.map((address, index) => (
+                  <div className="addressCommute" key={index}>
+                    <div className="address" >
+                      <input
+                          className="addressInput"
+                          type="text"
+                          onChange={(e) => {
+                                              let {allAddresses} = this.state
+                                              allAddresses.splice(index, 1, e.target.value)
+                                              console.log(allAddresses)
+                                              this.setState({ allAddresses });
+                                            } }
+                          autoComplete="given-name"
+                          placeholder={'Adresse '+(index+1)}
+                          value={address}
+                          required={true}
+                      />
+                      <div className="delete" onClick={(e) => this.handleDeleteClick(index, e)}>
+                          <button className="deleteButton">
+                            <span className="deleteSymbol">X</span>
+                          </button>
+                      </div>
+                    </div>
+                    <div className="commutes">
+                      {commuteTypes.map((commuteType, indexCommute) => (
+                        <Commute commuteType={commuteType} key={indexCommute} feedback={this.getFeedbackForCommuteButton(index, indexCommute)} indexCommute={indexCommute} index={index} onClick={() => this.handleCommuteTypeClick(index, indexCommute)}/>
+                      ))} 
                     </div>
                   </div>
-                  <div className="commutes">
-                    {commuteTypes.map((commuteType, indexCommute) => (
-                      <Commute commuteType={commuteType} key={indexCommute} feedback={this.getFeedbackForCommuteButton(index, indexCommute)} indexCommute={indexCommute} index={index} onClick={() => this.handleCommuteTypeClick(index, indexCommute)}/>
-                    ))} 
-                  </div>
+                ))}
+                <div className="addAddressButton" onClick={() => this.handleAddAddressClick()}>
+                    <button className="addAddress">
+                        +
+                    </button>
                 </div>
-              ))}
-              <div className="addAddressButton" onClick={() => this.handleAddAddressClick()}>
-                  <button className="addAddress">
-                      +
-                  </button>
-              </div>
-          </div>
-          <button type="submit" className="button" onClick={(e)=>this.sendData(e)}><Link to={{
-                                                                                              pathname: '/map',
-                                                                                              /*state: {
-                                                                                                resultFromPython: resultFromPython
-                                                                                              }*/
-                                                                                            }}>Testons MichMich</Link></button>
-        </form>
+            </div>
+            <button type="submit" className="button" onClick={(e)=>this.sendData(e)}>Testons MichMich</button>
+          </form>)}
+          {results && (
+            <Map resultFromPython={resultFromPython}></Map>
+          )}
+        </div>
       )
     }
   }
