@@ -7,6 +7,7 @@ import Commute from '../components/Commute'
 import Map from '../components/Map'
 
 const COMMUTE = ['🚶🏽‍♂️', '🚇', '🚗', '🚲']
+const COMMUTE_ICONS = ['fas fa-walking', 'fas fa-train', 'fas fa-car-side', 'fas fa-bicycle']
 
 class Form extends Component {
     state = {
@@ -14,9 +15,9 @@ class Form extends Component {
       activity: 'Bar',
       allAddresses: ['Place Monge, Paris','Pont de Neuilly'],
       allCommuteWays: [0, 3],
-      commuteTypes: COMMUTE,
+      commuteTypes: COMMUTE_ICONS,
       results: false,
-      form: true,
+      formSending: false,
       resultFromPython: []
     }
   
@@ -91,6 +92,7 @@ class Form extends Component {
   
     sendData = (e) => {
       e.preventDefault();
+      this.setState({formSending: true})
       fetch('/test',{
         method:'POST',
         headers: {
@@ -117,16 +119,16 @@ class Form extends Component {
     }
   
     render() {
-      const { amountOfUsers, activity, allAddresses, commuteTypes, resultFromPython, results, form } = this.state
+      const { amountOfUsers, activity, allAddresses, commuteTypes, resultFromPython, results, formSending } = this.state
   
       return (
         <div>
-          {form && (
+          {!results && (
           <form className="formulaire">
             <label className="people">
               <span>Vous êtes combien ?</span>
-              <input className="peopleInput"
-                  type="int"
+              <input className="input is-hovered"
+                  type="number"
                   onChange={this.handleAmountOfUsersUpdate}
                   autoComplete="given-name"
                   placeholder="3"
@@ -136,7 +138,7 @@ class Form extends Component {
             </label>
             <label className="activity">
               <span>Pour quoi faire ?</span>
-              <input className="activityInput"
+              <input className="input"
                   type="text"
                   onChange={this.handleActivityUpdate}
                   autoComplete="given-name"
@@ -146,12 +148,13 @@ class Form extends Component {
               />
             </label>
             <div className="addresses">
-                Quelles sont les adresses ?
+              <p>Quelles sont les adresses ?</p>
+              <div className="block">
                 {allAddresses.map((address, index) => (
-                  <div className="addressCommute" key={index}>
-                    <div className="address" >
+                  <div className="box" key={index}>
+                    <div className="block">
                       <input
-                          className="addressInput"
+                          className="input"
                           type="text"
                           onChange={(e) => {
                                               let {allAddresses} = this.state
@@ -164,27 +167,32 @@ class Form extends Component {
                           value={address}
                           required={true}
                       />
-                      <div className="delete" onClick={(e) => this.handleDeleteClick(index, e)}>
-                          <button className="deleteButton">
-                            <span className="deleteSymbol">X</span>
-                          </button>
-                      </div>
                     </div>
-                    <div className="commutes">
+                    <div className="buttons is-centered">
                       {commuteTypes.map((commuteType, indexCommute) => (
                         <Commute commuteType={commuteType} key={indexCommute} feedback={this.getFeedbackForCommuteButton(index, indexCommute)} indexCommute={indexCommute} index={index} onClick={() => this.handleCommuteTypeClick(index, indexCommute)}/>
-                      ))} 
+                      ))}
+                      <button className="button is-primary is-outlined" onClick={(e) => this.handleDeleteClick(index, e)}>
+                        <span class="icon is-small">
+                          <i class="fas fa-times"></i>
+                        </span>
+                      </button> 
                     </div>
                   </div>
+                  
                 ))}
-                <div className="addAddressButton" onClick={() => this.handleAddAddressClick()}>
-                    <button className="addAddress">
-                        +
-                    </button>
-                </div>
+                <button className="button is-link is-outlined " onClick={() => this.handleAddAddressClick()}>
+                  <span> Ajoute une adresse</span>
+                  <span class="icon is-small">
+                    <i class="fas fa-plus"></i>
+                  </span>
+                </button>
+              </div>
             </div>
-            <button type="submit" className="button" onClick={(e)=>this.sendData(e)}>Testons MichMich</button>
-          </form>)}
+            {!formSending ? (<button type="submit" className="button is-primary" onClick={(e)=>this.sendData(e)}>Testons MichMich</button>)
+                          : (<button type="submit" className="button is-loading" onClick={(e)=>this.sendData(e)}>Testons MichMich</button>)}
+            </form>
+            )}
           {results && (
             <Map resultFromPython={resultFromPython}></Map>
           )}

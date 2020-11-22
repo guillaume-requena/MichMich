@@ -4,11 +4,17 @@ import PropTypes from 'prop-types';
 import './Commute.css'
 
 const Commute = ({ commuteType, feedback, indexCommute, index, onClick }) => (
-    <div className={`commute ${feedback}`} onClick={() => onClick(index, indexCommute)}>
-      <span className="symbol">
-        {commuteType}
-      </span>
-    </div>
+  !(feedback === 'hidden') ? 
+                          (<button className='button is-primary is-rounded' onClick={() => onClick(index, indexCommute)}>
+                            <span class="icon is-small">
+                              <i className={commuteType}></i>
+                            </span>
+                          </button>)
+                          : (<button className='button is-primary is-rounded' onClick={() => onClick(index, indexCommute)} disabled>
+                              <span class="icon is-small">
+                                <i className={commuteType}></i>
+                              </span>
+                            </button>)
   )
 
 Commute.propTypes = {
