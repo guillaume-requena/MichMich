@@ -1,7 +1,5 @@
-.results {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+.placeCard   {
+    size: 0ch;
+    text-align: center;
+    color: rgb(50, 126, 192)
   }

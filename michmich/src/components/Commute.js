@@ -6,12 +6,12 @@ import './Commute.css'
 const Commute = ({ commuteType, feedback, indexCommute, index, onClick }) => (
   !(feedback === 'hidden') ? 
                           (<button className='button is-primary is-rounded' onClick={() => onClick(index, indexCommute)}>
-                            <span class="icon is-small">
+                            <span className="icon is-small">
                               <i className={commuteType}></i>
                             </span>
                           </button>)
                           : (<button className='button is-primary is-rounded' onClick={() => onClick(index, indexCommute)} disabled>
-                              <span class="icon is-small">
+                              <span className="icon is-small">
                                 <i className={commuteType}></i>
                               </span>
                             </button>)
