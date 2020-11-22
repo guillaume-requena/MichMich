@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-router-dom"
 
-import './App.css';
+import './App.sass';
 
 import MainPage from './pages/MainPage'
 import Form from './pages/Form'
