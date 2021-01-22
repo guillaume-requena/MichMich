@@ -2,149 +2,89 @@
 # -*- coding: utf-8 -*-
 
 
-# # import pandas as pd
+import api.smallest_circle as smallest_circle
+import pandas as pd
 import numpy as np
-import requests
-from urllib.parse import urlencode, urlparse , parse_qsl
+
+from api.geometry import normalize, deplace, distance 
+from api.google_apis import extract_lat_lng, nearbysearch, get_time_and_distance_between_two_points
+from api.google_apis import get_duration_and_distances
+from api.ranking import global_note, list_rank
+
+coefficients = {
+    'GLOBAL':{'rank_rating':1,'rank_user_ratings_total':1,'rank_price_level':1,'rank_distance_to_center':1.5},
+    'ECONOMIC':{'rank_rating':1,'rank_user_ratings_total':1,'rank_price_level':2.5,'rank_distance_to_center':1.5},
+    'POPULARITY':{'rank_rating':2.5,'rank_user_ratings_total':2,'rank_price_level':1,'rank_distance_to_center':1.5}
+}
 
 
-api_key = 'AIzaSyBV2UD7aRLnODU9qpJOzG7wHkjtF6c4l-M'
-
-
-def extract_lat_lng(address_or_postalcode, data_type = 'json'):
-    '''
-    extracts the lat and the lng from an adress
-    '''
-    endpoint = f"https://maps.googleapis.com/maps/api/geocode/{data_type}"
-    params = {'address' : address_or_postalcode , "key" : api_key}
-    url_params = urlencode(params)
-    url = f"{endpoint}?{url_params}"
-    r = requests.get(url)
-    if r.status_code not in range(200,299):
-        return {}
-    latlng = {}
-    try:
-        latlng = r.json()['results'][0]['geometry']['location']
-    except :
-        pass
-    return [latlng.get('lat'),latlng.get('lng')]
-
-
-
-def nearbysearch(lat, lng, radius, what = 'Bar'):
-    '''
-    returns the places corresponding to arg 'what' in a region of radius meters arround the point (lat,lng)
-    '''
-    places_endpoint_2 = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
-    params_2 = {
-        "key" : api_key, 
-        "location" : f"{lat},{lng}",
-        "radius" : radius,
-        "keyword" : what
-    }
-    params_2_encoded = urlencode(params_2)
-    places_url = f"{places_endpoint_2}?{params_2_encoded}"
-    r2 = requests.get(places_url)
-    return r2.json()
-
-
-def get_time_and_distance_between_two_points(pt1,pt2,mode='transit'):
-    '''
-    returns the time in seconds between pt1 and pt2 according to the transport mode 'mode'
-    mode can be : 
-                    - driving 
-                    - walking 
-                    - bicycling 
-                    - transit 
-    '''
-    lat1, lng1 = pt1[0],pt1[1]
-    lat2, lng2 = pt2[0],pt2[1]
-    detail_base_endpoint = 'https://maps.googleapis.com/maps/api/directions/json'
-    detail_params = {
-        "origin": str(lat1)+','+str(lng1),
-        "destination" : str(lat2)+','+str(lng2),
-        "key": api_key,
-        "transit_mode" : "rail",
-        "mode":mode
-    }
-    detail_params_encoded = urlencode(detail_params)
-    detail_url = f"{detail_base_endpoint}?{detail_params_encoded}"
-    r = requests.get(detail_url)
-    rep = r.json()
-    duration = rep['routes'][0]['legs'][0]['duration']['value']
-    distance = rep['routes'][0]['legs'][0]['distance']['value']
-    return duration/60,distance
-
-
-
-def normalize(vect):
-    vect = np.array(vect)
-    return vect/vect.sum()
-
-def distance(p1,p2):
-    return ((p1[0]-p2[0])**2+(p1[1]-p2[1])**2)**0.5
-
-def get_middle(points,coeff):
-    n = len(points)
-    res = []
-    distances = []
-    for i in range(n):
-        for j in range(i+1,n):
-            point_middle = (np.array(points[i])*coeff[i]+np.array(points[j])*coeff[j])/(coeff[i]+coeff[j])
-            res.append(point_middle)
-            distances.append(distance(points[i],point_middle))
-    return np.array(res),np.array(distances)
-
-def centre_gravite(points,coef_sum=[]):
-    '''
-    returns the centre de gravite of the points 
-    '''
-    points = np.array(points)
-    coef_sum =np.array(coef_sum)
-    if len(coef_sum)==0:
-        coef_sum=np.array([1/len(points)]*len(points))
-    x = np.array(points[:,0]*coef_sum).sum()
-    y = np.array(points[:,1]*coef_sum).sum()
-    return [x,y]
-
-
-
-def get_duration_and_distances(points,center,modes_transport):
-    n = len(points)
-    durations = []
-    distances = []
-    for i in range(n):
-        p = points[i]
-        transport_p = modes_transport[i]
-        duration_p, distance_p = get_time_and_distance_between_two_points(p,center,transport_p)
-        durations.append(duration_p)
-        distances.append(distance_p)
-    return np.array(durations),np.array(distances)
-
-
-def mich_mich(adresses, modes_transport, what = 'Bar'):
+def mich_mich(adresses, modes_transport, what = 'Bar',ranking='GLOBAL',plot=False):
     '''
     main function
     '''
+    # first coordinates calcul
     n = len(adresses)
-
-    #Get the point in the middle 
     points = np.array([extract_lat_lng(adr) for adr in adresses])
-    lat , lng = centre_gravite(points)
-    center = [lat,lng]
-    #Verifying that the new point is at an equal distance of everyone
-    #If it's not the case, recalculates a new point 
-    durations, distances = get_duration_and_distances(points,center,modes_transport)
     
-    # Recalculation in function of mode_transport of everyone
-    middles , distances = get_middle(points,durations)
-    center_adapted = centre_gravite(middles,normalize(distances))
-    durations, distances = get_duration_and_distances(points,center_adapted,modes_transport)
+    # first center calcul
+    lat, lng, _ = smallest_circle.make_circle(points)
+    center = np.array([lat,lng])
+    
+    
+    # first durations calcul
+    durations, distances = get_duration_and_distances(points,center,modes_transport)
+    max_duration = durations.max()
+    second_max_duration = sorted(durations)[-2]
+    new_points = points
+    cpteur=1
+    
+    if max_duration<=1.2*second_max_duration:
+        new_lat, new_lng = lat, lng
 
-    lat, lng = center_adapted[0],center_adapted[1]
-    radius = distances.max()/10
-    #Get the results of the places at a distance < radius of the center calculated
-    results =  nearbysearch(lat, lng, radius, what)
+    # 10 tests to improve the duration for everyone 
+    while max_duration>1.2*second_max_duration and cpteur<10:
+        cpteur+=1
+        poids = normalize(durations)
+        new_points = np.array([deplace(center,new_points[i],poids[i]) for i in range(len(poids))])
+        new_lat, new_lng, _ = smallest_circle.make_circle(new_points)
+        center = np.array([new_lat,new_lng])
+        durations, distances = get_duration_and_distances(points,center,modes_transport)
+        max_duration = durations.max()
+        second_max_duration = sorted(durations)[-2]
+       
+    radius = distances.max()/6
+    results =  nearbysearch(new_lat, new_lng, radius=radius, what='bar')
+    df_results = pd.DataFrame(results['results'])
+    
+    #Research around the center with a growing radius
+    cpteur_tentatives = 1
+    while len(results)==0 and cpteur_tentatives<10:
+        print(radius)
+        cpteur_tentatives+=1
+        radius*=1.5
+        results =  nearbysearch(new_lat, new_lng, radius, what)
+        df_results = pd.DataFrame(results['results'])
+    
+    coef = []
+    col_ranking = []
+    df_results = df_results.fillna(5)
+    df_results['lat'] = df_results.geometry.apply(lambda x : x['location']['lat'])
+    df_results['lng'] = df_results.geometry.apply(lambda x : x['location']['lng'])
+    df_results['distance_to_center']=df_results.apply(lambda row : distance(center,[row.lat,row.lng]),axis=1)
+    df_results['rank_distance_to_center'] = list_rank(df_results.distance_to_center.values)
+    
+    metrics = ['distance_to_center','rating','user_ratings_total','price_level']
+    for metric in metrics:
+        if metric in df_results.columns:
+            if metric=='rating' or metric=='user_ratings_total':
+                df_results[f'rank_{metric}'] = list_rank(df_results[metric].values,asc=False)
+            else:
+                df_results[f'rank_{metric}'] = list_rank(df_results[metric].values)
+            col_ranking.append(f'rank_{metric}')
+            coef.append(coefficients[ranking][f'rank_{metric}'])
+            
+    df_results['global_note'] = df_results.apply(lambda row : global_note(row,col_ranking,coef),axis=1)
+    df_results = df_results.sort_values(by='global_note',ascending=False).reset_index()
+    return df_results
 
-    return results
 
