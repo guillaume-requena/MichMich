@@ -13,9 +13,8 @@ def testAPI():
     modes_transport = [dico_commute[modes_transport[i]] for i in range(len(modes_transport))]
     activity = data['activity']
     res = get_places.mich_mich(adresses, modes_transport, what = activity)
-    df_results = pd.DataFrame(res['results'])
+    df_results = pd.DataFrame(res)
     col = ['business_status', 'geometry', 'name', 'permanently_closed','place_id', 'rating','user_ratings_total', 'vicinity', 'opening_hours','price_level']
     df_results = df_results[col]
     return df_results.to_json(orient="index")
-    # return res
-    #{'res1': adresses, 'res2': modes_transport, 'res3':activity}
+
