@@ -8,7 +8,7 @@ import requests
 from urllib.parse import urlencode, urlparse , parse_qsl
 
 
-api_key = 'AIzaSyCEUIo5QkTQbHL8eBolEF6C4i0fSsnarFk'
+api_key = 'AIzaSyBV2UD7aRLnODU9qpJOzG7wHkjtF6c4l-M'
 
 
 def extract_lat_lng(address_or_postalcode, data_type = 'json'):
