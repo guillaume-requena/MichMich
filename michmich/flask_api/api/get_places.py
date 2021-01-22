@@ -88,32 +88,3 @@ def mich_mich(adresses, modes_transport, what = 'Bar',ranking='GLOBAL',plot=Fals
     return df_results
 
 
-
-
-
-# def mich_mich(adresses, modes_transport, what = 'Bar'):
-#     '''
-#     main function
-#     '''
-#     n = len(adresses)
-
-#     #Get the point in the middle 
-#     points = np.array([extract_lat_lng(adr) for adr in adresses])
-#     lat , lng = centre_gravite(points)
-#     center = [lat,lng]
-#     #Verifying that the new point is at an equal distance of everyone
-#     #If it's not the case, recalculates a new point 
-#     durations, distances = get_duration_and_distances(points,center,modes_transport)
-    
-#     # Recalculation in function of mode_transport of everyone
-#     middles , distances = get_middle(points,durations)
-#     center_adapted = centre_gravite(middles,normalize(distances))
-#     durations, distances = get_duration_and_distances(points,center_adapted,modes_transport)
-
-#     lat, lng = center_adapted[0],center_adapted[1]
-#     radius = distances.max()/10
-#     #Get the results of the places at a distance < radius of the center calculated
-#     results =  nearbysearch(lat, lng, radius, what)
-
-#     return results
-
