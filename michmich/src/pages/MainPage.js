@@ -7,8 +7,11 @@ import './MainPage.css';
 const MainPage = () => {
     return (
         <div className="mainPage">
-            <h3 className="title">Bienvenue sur la V1 de MichMich</h3>
-            <Link className="button is-primary" to='/form'>Clique pour l'essayer !</Link>
+            <img src="Logo.png" alt="MichMichText" width="400"></img>
+            <br></br>
+            <Link className="button is-primary" to='/form'>Mode Solo</Link>
+            <br></br>
+            <Link className="button is-primary" to='/collabform'>Mode Partagé</Link>
         </div>
     );
 };
