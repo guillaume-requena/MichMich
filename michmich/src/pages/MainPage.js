@@ -11,7 +11,7 @@ const MainPage = () => {
             <br></br>
             <Link className="button is-primary" to='/form'>Mode Solo</Link>
             <br></br>
-            <Link className="button is-primary" to='/collabform'>Mode Partagé</Link>
+            <Link className="button is-primary" to='/collabform' >Mode Partagé</Link>
         </div>
     );
 };

@@ -142,3 +142,10 @@
     user-select: none;
     justify-content: center;
     }
+
+.resultPage > .block > p {
+    text-align: center;
+    justify-content: center;
+    font-weight: bold;
+}
+

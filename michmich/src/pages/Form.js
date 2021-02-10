@@ -137,7 +137,7 @@ class Form extends Component {
   }
   
     render() {
-      const { amountOfUsers, activity, allAddresses, commuteTypes, displayFormResult, formSending } = this.state
+      const { amountOfUsers, activity, allAddresses, commuteTypes, displayFormResult, formSending, displayMap } = this.state
   
       return (
         <div>
@@ -212,24 +212,33 @@ class Form extends Component {
             </form>
             )}
           {displayFormResult && (
-            <div className="block">
-                <button className="button is-primary" onClick={()=> this.displayMap()}>Map</button>
-                {(displayMap === true)} ?
-                  (
-                  <div>
+            <div className="resultPage">
+                {displayMap && (
+                  <div className="block">
                     <MapContainer resultLocationInfo={this.state.resultLocationInfo}/>
-                    <button className="button is-primary" onClick={()=> this.displayMap()} disabled>Map</button>
-                    <button className="button is-primary" onClick={()=> this.displayList()}>List</button>
-                  </div>
-                  ) :
-                  (
-                    <div>
-                      {this.state.resultLocationInfo.name}
-                      <button className="button is-primary" onClick={()=> this.displayMap()}>Map</button>
-                      <button className="button is-primary" onClick={()=> this.displayList()} disabled>List</button>
+                    <div className = "buttons has-addons is-centered">
+                      <button className="button is-primary is-selected" onClick={()=> this.displayMap()} disabled>Map</button>
+                      <button className="button is-primary" onClick={()=> this.displayList()}>List</button>
                     </div>
-                  )
-                <button className="button is-primary" onClick={()=> this.backToForm()}>Retour au formulaire</button>
+                    <div className = "buttons has-addons is-centered">
+                      <button className="button is-primary" onClick={()=> this.backToForm()}>Retour au formulaire</button>
+                    </div>
+                  </div>
+                  )}
+                {!displayMap && (
+                  <div className="block">
+                    <div className = "buttons has-addons is-centered">
+                      <button className="button is-primary" onClick={()=> this.displayMap()}>Map</button>
+                      <button className="button is-primary is-selected" onClick={()=> this.displayList()} disabled>List</button>
+                    </div>
+                    <div className = "buttons has-addons is-centered">
+                      <button className="button is-primary" onClick={()=> this.backToForm()}>Retour au formulaire</button>
+                    </div>
+                    <p className="box is-centered">
+                      {this.state.resultLocationInfo.name}
+                    </p>
+                  </div>
+                  )}
             </div>
           )}
         </div>
