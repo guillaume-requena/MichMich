@@ -17,9 +17,10 @@ class Form extends Component {
     allCommuteWays: [0, 3],
     commuteTypes: COMMUTE_ICONS,
     form: true,
-    displayMap: false,
+    displayFormResult: false,
     resultLocationInfo: {},
-    formSending: false
+    formSending: false,
+    displayMap:true
   }
 
   // Arrow fx for binding
@@ -92,7 +93,15 @@ class Form extends Component {
   }
 
   backToForm = () => {
-    this.setState({ displayMap:false, formSending:false })
+    this.setState({ displayFormResult:false, formSending:false })
+  }
+
+  displayMap = () => {
+    this.setState({ displayMap:true })
+  }
+
+  displayList = () => {
+    this.setState({ displayMap:false })
   }
 
   sendData = (e) => {
@@ -121,18 +130,18 @@ class Form extends Component {
           // this.setState({ resultFromPython: Object.values(data), results: true, form: false })
           this.setState({
             resultLocationInfo:data[0],
-            displayMap: true
+            displayFormResult: true
           })
         })
       })
   }
   
     render() {
-      const { amountOfUsers, activity, allAddresses, commuteTypes, displayMap, formSending } = this.state
+      const { amountOfUsers, activity, allAddresses, commuteTypes, displayFormResult, formSending } = this.state
   
       return (
         <div>
-          {!displayMap && (
+          {!displayFormResult && (
           <form className="formulaire">
             <label className="people">
               <span>Vous êtes combien ?</span>
@@ -202,9 +211,24 @@ class Form extends Component {
                           : (<button type="submit" className="button is-loading" onClick={(e)=>this.sendData(e)}>Testons MichMich</button>)}
             </form>
             )}
-          {displayMap && (
+          {displayFormResult && (
             <div className="block">
-                <MapContainer resultLocationInfo={this.state.resultLocationInfo}/>
+                <button className="button is-primary" onClick={()=> this.displayMap()}>Map</button>
+                {(displayMap === true)} ?
+                  (
+                  <div>
+                    <MapContainer resultLocationInfo={this.state.resultLocationInfo}/>
+                    <button className="button is-primary" onClick={()=> this.displayMap()} disabled>Map</button>
+                    <button className="button is-primary" onClick={()=> this.displayList()}>List</button>
+                  </div>
+                  ) :
+                  (
+                    <div>
+                      {this.state.resultLocationInfo.name}
+                      <button className="button is-primary" onClick={()=> this.displayMap()}>Map</button>
+                      <button className="button is-primary" onClick={()=> this.displayList()} disabled>List</button>
+                    </div>
+                  )
                 <button className="button is-primary" onClick={()=> this.backToForm()}>Retour au formulaire</button>
             </div>
           )}
