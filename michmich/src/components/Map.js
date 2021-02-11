@@ -63,6 +63,9 @@ export class MapContainer extends Component {
     }
 }
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 export default GoogleApiWrapper({
-    apiKey: 'AIzaSyBV2UD7aRLnODU9qpJOzG7wHkjtF6c4l-M'
+    apiKey: process.env.API_KEY
 })(MapContainer);

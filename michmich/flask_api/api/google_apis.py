@@ -2,8 +2,9 @@ import requests
 from urllib.parse import urlencode, urlparse , parse_qsl
 import numpy as np 
 import json 
+import os 
 
-api_key = 'AIzaSyBV2UD7aRLnODU9qpJOzG7wHkjtF6c4l-M'
+api_key = os.environ.get('API_KEY')
 
 
 def extract_lat_lng(address_or_postalcode, data_type = 'json'):
