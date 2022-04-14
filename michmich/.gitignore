@@ -8,6 +8,7 @@ flask_api/pipenv/
 ./flask_api/pipenv/
 pipenv/
 .pipenv
+.env
 
 # testing
 /coverage
